@@ -12,9 +12,7 @@ Os seguintes pacotes do python são usados:
 
 Podem ser instalados com:
 ```bash
-<pre>
-pip install <b>pacote</b>
-</pre>
+pip install {nome_do_pacote}
 ```
 
 ## Arquivos
