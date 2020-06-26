@@ -220,12 +220,12 @@ def main():
 
 	# Loop
 
-	running = True
+	running = False
 	screen = pygame.display.set_mode((WIDTH, HEIGHT))
 	clock = pygame.time.Clock()
 
 	# warp(1000)
-	print(timeit.timeit(full_step, number=1000))
+	print(timeit.timeit(full_step, number=500))
 
 	while running:
 		for event in pygame.event.get():
@@ -251,7 +251,7 @@ def main():
 
 		pygame.display.flip()
 
-		full_step()
+		# full_step()
 
 		# clock.tick(20)
 

@@ -1,5 +1,4 @@
 import pyopencl as cl
-import pyopencl.array
 import numpy as np
 import pygame
 import timeit
@@ -196,8 +195,6 @@ def main():
 		for _ in range(n):
 			full_step()
 
-		cl.enqueue_barrier(queue)
-
 	# LR
 	glider = make_pattern([
 		[0,0,1],
@@ -261,12 +258,12 @@ def main():
 
 	# Loop
 
-	running = True
+	running = False
 	screen = pygame.display.set_mode((WIDTH, HEIGHT))
 	clock = pygame.time.Clock()
 
 	# warp(1000)
-	print(timeit.timeit(full_step, number=1000))
+	print(timeit.timeit(full_step, number=500))
 
 	while running:
 		for event in pygame.event.get():
@@ -292,7 +289,7 @@ def main():
 
 		pygame.display.flip()
 
-		full_step()
+		# full_step()
 
 		# clock.tick(20)
 
