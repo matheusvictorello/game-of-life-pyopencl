@@ -1,3 +1,5 @@
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pyopencl as cl
 import numpy as np
 import pygame
@@ -17,10 +19,9 @@ TYPE_SIZE = np.dtype(TYPE).itemsize
 SQR_SIZE = 4
 WIDTH, HEIGHT = N*SQR_SIZE, N*SQR_SIZE
 
-SEE_ACTIVE_BLOCKS = True
-
-STEP_SIM = 0
-WARP = 0
+SEE_ACTIVE_BLOCKS = False
+STEP_SIM = False
+WARP = False
 GEN_TO_WARP = 0
 FPS = 0
 
@@ -198,7 +199,7 @@ def main():
 					pygame.draw.rect(screen, (255, 255, 255), (j*SQR_SIZE+dy*SQR_SIZE*BLOCK_SIDE+SQR_SIZE, i*SQR_SIZE+dx*SQR_SIZE*BLOCK_SIDE+SQR_SIZE, SQR_SIZE, SQR_SIZE))
 
 	def warp(n):
-		print(timeit.timeit(full_step, number=n))
+		print(f'{n} gerações em {timeit.timeit(full_step, number=n)}')
 
 	# LR
 	glider = make_pattern([
@@ -263,7 +264,7 @@ def main():
 
 	# Loop
 
-	running = False
+	running = True
 	screen = pygame.display.set_mode((WIDTH, HEIGHT))
 	clock = pygame.time.Clock()
 
@@ -294,7 +295,7 @@ def main():
 
 		pygame.display.flip()
 
-		if STEP == 0:
+		if STEP_SIM == 0:
 			full_step()
 
 		if not FPS == 0:
@@ -304,28 +305,29 @@ if __name__ == '__main__':
 	args = sys.argv[1:]
 
 	if '--step' in args:
-		STEP_SIM = 1
+		STEP_SIM = True
 
 	if '--warp' in args:
-		WARP = 1
+		WARP = True
 
 		idx = args.index('--warp') + 1
+		
 		try:
-			n = args + 1
+			GEN_TO_WARP = int(args[idx])
 		except:
 			print('--warp <n>')
 			exit()
 
-		GEN_TO_WARP = int(args[n])
-
 	if '--fps' in args:
-		idx = args.index('--warp') + 1
+		idx = args.index('--fps') + 1
+		
 		try:
-			n = args + 1
+			FPS = int(args[idx])
 		except:
 			print('--fps <n>')
 			exit()
 
-		FPS = int(args[n])
+	if '--blocks' in args:
+		SEE_ACTIVE_BLOCKS = True
 
 	main()
