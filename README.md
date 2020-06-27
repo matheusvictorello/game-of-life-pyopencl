@@ -8,7 +8,6 @@ Os seguintes pacotes do python são usados:
 * pyopencl 
 * numpy 
 * pygame
-* timeit
 
 Podem ser instalados com:
 ```bash
@@ -42,3 +41,26 @@ python nocl.py
 ```bash
 python info.py
 ```
+
+## Opções
+
+* --step
+* --warp <n>
+* --fps <n>
+* --blocks
+
+### --step
+
+Para a execução contínua, executa uma geração a cada tecla pressionada.
+
+### --warp <n>
+
+Simula n gerações sem atualizar a tela.
+
+### --fps <n>
+
+Define o fps máximo da simulação, 0 desabilita.
+
+### --blocks
+
+Mostra os blocos ativos.

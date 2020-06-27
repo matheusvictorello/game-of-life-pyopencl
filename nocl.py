@@ -18,6 +18,8 @@ TYPE_SIZE = np.dtype(TYPE).itemsize
 SQR_SIZE = 4
 WIDTH, HEIGHT = N*SQR_SIZE, N*SQR_SIZE
 
+BLOCK_P_OFFSET = SQR_SIZE*BLOCK_SIDE
+
 SEE_ACTIVE_BLOCKS = False
 STEP_SIM = False
 WARP = False
@@ -158,7 +160,7 @@ def main():
 		for i, line in enumerate(m):
 			for j, cell in enumerate(line):
 				if cell == 1:
-					pygame.draw.rect(screen, (255, 255, 255), (j*SQR_SIZE+dy*SQR_SIZE*BLOCK_SIDE+SQR_SIZE, i*SQR_SIZE+dx*SQR_SIZE*BLOCK_SIDE+SQR_SIZE, SQR_SIZE, SQR_SIZE))
+					pygame.draw.rect(screen, (255, 255, 255), (SQR_SIZE*(j+dy*BLOCK_SIDE+1), SQR_SIZE*(i+dx*BLOCK_SIDE+1), SQR_SIZE, SQR_SIZE))
 
 	def warp(n):
 		print(f'{n} gerações em {timeit.timeit(full_step, number=n)}')
@@ -249,7 +251,7 @@ def main():
 				else:
 					color = (0, 255, 0)
 
-				pygame.draw.rect(screen, color, (j*SQR_SIZE*BLOCK_SIDE+SQR_SIZE, i*SQR_SIZE*BLOCK_SIDE+SQR_SIZE, SQR_SIZE*BLOCK_SIDE, SQR_SIZE*BLOCK_SIDE))
+				pygame.draw.rect(screen, color, (j*BLOCK_P_OFFSET+SQR_SIZE, i*BLOCK_P_OFFSET+SQR_SIZE, BLOCK_P_OFFSET, BLOCK_P_OFFSET))
 
 			ret = see(i, j)
 
