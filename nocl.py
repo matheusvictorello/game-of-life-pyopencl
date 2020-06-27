@@ -1,6 +1,7 @@
 import numpy as np
 import pygame
 import timeit
+import sys
 
 BLOCK_SIDE = 8
 BLOCKS_PER_DIM = 32
@@ -12,14 +13,19 @@ BLOCK = (BLOCK_SIDE, BLOCK_SIDE)
 TYPE = np.int32
 TYPE_SIZE = np.dtype(TYPE).itemsize
 
-pygame.init()
-
 SQR_SIZE = 4
 WIDTH, HEIGHT = N*SQR_SIZE, N*SQR_SIZE
 
 SEE_ACTIVE_BLOCKS = True
 
+STEP_SIM = 0
+WARP = 0
+GEN_TO_WARP = 0
+FPS = 0
+
 def main():
+	pygame.init()
+
 	steps = 0
 	active_blocks = []
 
@@ -154,8 +160,7 @@ def main():
 					pygame.draw.rect(screen, (255, 255, 255), (j*SQR_SIZE+dy*SQR_SIZE*BLOCK_SIDE+SQR_SIZE, i*SQR_SIZE+dx*SQR_SIZE*BLOCK_SIDE+SQR_SIZE, SQR_SIZE, SQR_SIZE))
 
 	def warp(n):
-		for _ in range(n):
-			full_step()
+		print(timeit.timeit(full_step, number=n))
 
 	# LR
 	glider = make_pattern([
@@ -224,8 +229,8 @@ def main():
 	screen = pygame.display.set_mode((WIDTH, HEIGHT))
 	clock = pygame.time.Clock()
 
-	# warp(1000)
-	print(timeit.timeit(full_step, number=500))
+	if WARP:
+		warp(GEN_TO_WARP)
 
 	while running:
 		for event in pygame.event.get():
@@ -256,4 +261,31 @@ def main():
 		# clock.tick(20)
 
 if __name__ == '__main__':
+	args = sys.argv[1:]
+
+	if '--step' in args:
+		STEP_SIM = 1
+
+	if '--warp' in args:
+		WARP = 1
+
+		idx = args.index('--warp') + 1
+		try:
+			n = args + 1
+		except:
+			print('--warp <n>')
+			exit()
+
+		GEN_TO_WARP = int(args[n])
+
+	if '--fps' in args:
+		idx = args.index('--warp') + 1
+		try:
+			n = args + 1
+		except:
+			print('--fps <n>')
+			exit()
+
+		FPS = int(args[n])
+
 	main()
